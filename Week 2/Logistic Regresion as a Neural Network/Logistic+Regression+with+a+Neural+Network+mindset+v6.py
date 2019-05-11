@@ -607,7 +607,7 @@ print ("predictions = " + str(predict(w, b, X)))
 #     - Y_prediction_train for your predictions on the train set
 #     - w, costs, grads for the outputs of optimize()
 
-# In[ ]:
+# In[17]:
 
 # GRADED FUNCTION: model
 
@@ -631,18 +631,18 @@ def model(X_train, Y_train, X_test, Y_test, num_iterations = 2000, learning_rate
     ### START CODE HERE ###
     
     # initialize parameters with zeros (≈ 1 line of code)
-    w, b = None
+    w, b = initialize_with_zeros(X_train.shape[0])
 
     # Gradient descent (≈ 1 line of code)
-    parameters, grads, costs = None
+    parameters, grads, costs = optimize(w, b, X_train, Y_train, num_iterations, learning_rate, print_cost)
     
     # Retrieve parameters w and b from dictionary "parameters"
     w = parameters["w"]
     b = parameters["b"]
     
     # Predict test/train set examples (≈ 2 lines of code)
-    Y_prediction_test = None
-    Y_prediction_train = None
+    Y_prediction_test = predict(w, b, X_test)
+    Y_prediction_train = predict(w, b, X_train)
 
     ### END CODE HERE ###
 
@@ -664,7 +664,7 @@ def model(X_train, Y_train, X_test, Y_test, num_iterations = 2000, learning_rate
 
 # Run the following cell to train your model.
 
-# In[ ]:
+# In[18]:
 
 d = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations = 2000, learning_rate = 0.005, print_cost = True)
 
@@ -699,7 +699,7 @@ d = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations = 200
 # 
 # Also, you see that the model is clearly overfitting the training data. Later in this specialization you will learn how to reduce overfitting, for example by using regularization. Using the code below (and changing the `index` variable) you can look at predictions on pictures of the test set.
 
-# In[ ]:
+# In[19]:
 
 # Example of a picture that was wrongly classified.
 index = 1
@@ -709,7 +709,7 @@ print ("y = " + str(test_set_y[0,index]) + ", you predicted that it is a \"" + c
 
 # Let's also plot the cost function and the gradients.
 
-# In[ ]:
+# In[20]:
 
 # Plot learning curve (with costs)
 costs = np.squeeze(d['costs'])

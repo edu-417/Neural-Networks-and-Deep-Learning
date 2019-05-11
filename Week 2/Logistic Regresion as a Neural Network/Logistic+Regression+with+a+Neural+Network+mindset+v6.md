@@ -678,18 +678,18 @@ def model(X_train, Y_train, X_test, Y_test, num_iterations = 2000, learning_rate
     ### START CODE HERE ###
     
     # initialize parameters with zeros (≈ 1 line of code)
-    w, b = None
+    w, b = initialize_with_zeros(X_train.shape[0])
 
     # Gradient descent (≈ 1 line of code)
-    parameters, grads, costs = None
+    parameters, grads, costs = optimize(w, b, X_train, Y_train, num_iterations, learning_rate, print_cost)
     
     # Retrieve parameters w and b from dictionary "parameters"
     w = parameters["w"]
     b = parameters["b"]
     
     # Predict test/train set examples (≈ 2 lines of code)
-    Y_prediction_test = None
-    Y_prediction_train = None
+    Y_prediction_test = predict(w, b, X_test)
+    Y_prediction_train = predict(w, b, X_train)
 
     ### END CODE HERE ###
 
@@ -715,6 +715,30 @@ Run the following cell to train your model.
 ```python
 d = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations = 2000, learning_rate = 0.005, print_cost = True)
 ```
+
+    Cost after iteration 0: 0.693147
+    Cost after iteration 100: 0.584508
+    Cost after iteration 200: 0.466949
+    Cost after iteration 300: 0.376007
+    Cost after iteration 400: 0.331463
+    Cost after iteration 500: 0.303273
+    Cost after iteration 600: 0.279880
+    Cost after iteration 700: 0.260042
+    Cost after iteration 800: 0.242941
+    Cost after iteration 900: 0.228004
+    Cost after iteration 1000: 0.214820
+    Cost after iteration 1100: 0.203078
+    Cost after iteration 1200: 0.192544
+    Cost after iteration 1300: 0.183033
+    Cost after iteration 1400: 0.174399
+    Cost after iteration 1500: 0.166521
+    Cost after iteration 1600: 0.159305
+    Cost after iteration 1700: 0.152667
+    Cost after iteration 1800: 0.146542
+    Cost after iteration 1900: 0.140872
+    train accuracy: 99.04306220095694 %
+    test accuracy: 70.0 %
+
 
 **Expected Output**: 
 
@@ -754,6 +778,13 @@ plt.imshow(test_set_x[:,index].reshape((num_px, num_px, 3)))
 print ("y = " + str(test_set_y[0,index]) + ", you predicted that it is a \"" + classes[d["Y_prediction_test"][0,index]].decode("utf-8") +  "\" picture.")
 ```
 
+    y = 1, you predicted that it is a "cat" picture.
+
+
+
+![png](output_44_1.png)
+
+
 Let's also plot the cost function and the gradients.
 
 
@@ -766,6 +797,10 @@ plt.xlabel('iterations (per hundreds)')
 plt.title("Learning rate =" + str(d["learning_rate"]))
 plt.show()
 ```
+
+
+![png](output_46_0.png)
+
 
 **Interpretation**:
 You can see the cost decreasing. It shows that the parameters are being learned. However, you see that you could train the model even more on the training set. Try to increase the number of iterations in the cell above and rerun the cells. You might see that the training set accuracy goes up, but the test set accuracy goes down. This is called overfitting. 
