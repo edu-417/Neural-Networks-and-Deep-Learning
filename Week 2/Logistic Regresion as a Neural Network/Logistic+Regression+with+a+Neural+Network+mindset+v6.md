@@ -63,6 +63,13 @@ plt.imshow(train_set_x_orig[index])
 print ("y = " + str(train_set_y[:, index]) + ", it's a '" + classes[np.squeeze(train_set_y[:, index])].decode("utf-8") +  "' picture.")
 ```
 
+    y = [1], it's a 'cat' picture.
+
+
+
+![png](output_6_1.png)
+
+
 Many software bugs in deep learning come from having matrix/vector dimensions that don't fit. If you can keep your matrix/vector dimensions straight you will go a long way toward eliminating many bugs. 
 
 **Exercise:** Find the values for:
@@ -74,9 +81,9 @@ Remember that `train_set_x_orig` is a numpy-array of shape (m_train, num_px, num
 
 ```python
 ### START CODE HERE ### (≈ 3 lines of code)
-m_train = None
-m_test = None
-num_px = None
+m_train = train_set_x_orig.shape[0]
+m_test = test_set_x_orig.shape[0]
+num_px = train_set_x_orig.shape[1]
 ### END CODE HERE ###
 
 print ("Number of training examples: m_train = " + str(m_train))
@@ -88,6 +95,16 @@ print ("train_set_y shape: " + str(train_set_y.shape))
 print ("test_set_x shape: " + str(test_set_x_orig.shape))
 print ("test_set_y shape: " + str(test_set_y.shape))
 ```
+
+    Number of training examples: m_train = 209
+    Number of testing examples: m_test = 50
+    Height/Width of each image: num_px = 64
+    Each image is of size: (64, 64, 3)
+    train_set_x shape: (209, 64, 64, 3)
+    train_set_y shape: (1, 209)
+    test_set_x shape: (50, 64, 64, 3)
+    test_set_y shape: (1, 50)
+
 
 **Expected Output for m_train, m_test and num_px**: 
 <table style="width:15%">
@@ -123,8 +140,8 @@ X_flatten = X.reshape(X.shape[0], -1).T      # X.T is the transpose of X
 # Reshape the training and test examples
 
 ### START CODE HERE ### (≈ 2 lines of code)
-train_set_x_flatten = None
-test_set_x_flatten = None
+train_set_x_flatten = train_set_x_orig.reshape(m_train, -1).T
+test_set_x_flatten = test_set_x_orig.reshape(m_test, -1).T
 ### END CODE HERE ###
 
 print ("train_set_x_flatten shape: " + str(train_set_x_flatten.shape))
@@ -133,6 +150,13 @@ print ("test_set_x_flatten shape: " + str(test_set_x_flatten.shape))
 print ("test_set_y shape: " + str(test_set_y.shape))
 print ("sanity check after reshaping: " + str(train_set_x_flatten[0:5,0]))
 ```
+
+    train_set_x_flatten shape: (12288, 209)
+    train_set_y shape: (1, 209)
+    test_set_x_flatten shape: (12288, 50)
+    test_set_y shape: (1, 50)
+    sanity check after reshaping: [17 31 56 22 33]
+
 
 **Expected Output**: 
 

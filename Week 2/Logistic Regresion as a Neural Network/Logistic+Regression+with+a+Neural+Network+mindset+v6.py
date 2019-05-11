@@ -23,7 +23,7 @@
 # - [matplotlib](http://matplotlib.org) is a famous library to plot graphs in Python.
 # - [PIL](http://www.pythonware.com/products/pil/) and [scipy](https://www.scipy.org/) are used here to test your model with your own picture at the end.
 
-# In[ ]:
+# In[1]:
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -47,7 +47,7 @@ get_ipython().magic('matplotlib inline')
 # 
 # Let's get more familiar with the dataset. Load the data by running the following code.
 
-# In[ ]:
+# In[2]:
 
 # Loading the data (cat/non-cat)
 train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = load_dataset()
@@ -57,7 +57,7 @@ train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = load_datas
 # 
 # Each line of your train_set_x_orig and test_set_x_orig is an array representing an image. You can visualize an example by running the following code. Feel free also to change the `index` value and re-run to see other images. 
 
-# In[ ]:
+# In[3]:
 
 # Example of a picture
 index = 25
@@ -73,12 +73,12 @@ print ("y = " + str(train_set_y[:, index]) + ", it's a '" + classes[np.squeeze(t
 #     - num_px (= height = width of a training image)
 # Remember that `train_set_x_orig` is a numpy-array of shape (m_train, num_px, num_px, 3). For instance, you can access `m_train` by writing `train_set_x_orig.shape[0]`.
 
-# In[ ]:
+# In[4]:
 
 ### START CODE HERE ### (≈ 3 lines of code)
-m_train = None
-m_test = None
-num_px = None
+m_train = train_set_x_orig.shape[0]
+m_test = test_set_x_orig.shape[0]
+num_px = train_set_x_orig.shape[1]
 ### END CODE HERE ###
 
 print ("Number of training examples: m_train = " + str(m_train))
@@ -120,13 +120,13 @@ print ("test_set_y shape: " + str(test_set_y.shape))
 # X_flatten = X.reshape(X.shape[0], -1).T      # X.T is the transpose of X
 # ```
 
-# In[ ]:
+# In[5]:
 
 # Reshape the training and test examples
 
 ### START CODE HERE ### (≈ 2 lines of code)
-train_set_x_flatten = None
-test_set_x_flatten = None
+train_set_x_flatten = train_set_x_orig.reshape(m_train, -1).T
+test_set_x_flatten = test_set_x_orig.reshape(m_test, -1).T
 ### END CODE HERE ###
 
 print ("train_set_x_flatten shape: " + str(train_set_x_flatten.shape))
@@ -169,7 +169,7 @@ print ("sanity check after reshaping: " + str(train_set_x_flatten[0:5,0]))
 # 
 # Let's standardize our dataset.
 
-# In[ ]:
+# In[6]:
 
 train_set_x = train_set_x_flatten/255.
 test_set_x = test_set_x_flatten/255.
