@@ -224,7 +224,7 @@ test_set_x = test_set_x_flatten/255.
 # 
 # **Exercise**: Using your code from "Python Basics", implement `sigmoid()`. As you've seen in the figure above, you need to compute $sigmoid( w^T x + b) = \frac{1}{1 + e^{-(w^T x + b)}}$ to make predictions. Use np.exp().
 
-# In[ ]:
+# In[7]:
 
 # GRADED FUNCTION: sigmoid
 
@@ -240,13 +240,13 @@ def sigmoid(z):
     """
 
     ### START CODE HERE ### (≈ 1 line of code)
-    s = None
+    s = 1 / ( 1 + np.exp(-z) )
     ### END CODE HERE ###
     
     return s
 
 
-# In[ ]:
+# In[8]:
 
 print ("sigmoid([0, 2]) = " + str(sigmoid(np.array([0,2]))))
 
@@ -264,7 +264,7 @@ print ("sigmoid([0, 2]) = " + str(sigmoid(np.array([0,2]))))
 # 
 # **Exercise:** Implement parameter initialization in the cell below. You have to initialize w as a vector of zeros. If you don't know what numpy function to use, look up np.zeros() in the Numpy library's documentation.
 
-# In[ ]:
+# In[9]:
 
 # GRADED FUNCTION: initialize_with_zeros
 
@@ -281,8 +281,8 @@ def initialize_with_zeros(dim):
     """
     
     ### START CODE HERE ### (≈ 1 line of code)
-    w = None
-    b = None
+    w = np.zeros((dim, 1))
+    b = 0
     ### END CODE HERE ###
 
     assert(w.shape == (dim, 1))
@@ -291,7 +291,7 @@ def initialize_with_zeros(dim):
     return w, b
 
 
-# In[ ]:
+# In[10]:
 
 dim = 2
 w, b = initialize_with_zeros(dim)
@@ -334,7 +334,7 @@ print ("b = " + str(b))
 # $$ \frac{\partial J}{\partial w} = \frac{1}{m}X(A-Y)^T\tag{7}$$
 # $$ \frac{\partial J}{\partial b} = \frac{1}{m} \sum_{i=1}^m (a^{(i)}-y^{(i)})\tag{8}$$
 
-# In[ ]:
+# In[11]:
 
 # GRADED FUNCTION: propagate
 
@@ -361,14 +361,17 @@ def propagate(w, b, X, Y):
     
     # FORWARD PROPAGATION (FROM X TO COST)
     ### START CODE HERE ### (≈ 2 lines of code)
-    A = None                                    # compute activation
-    cost = None                                 # compute cost
+    Z = w.T @ X + b
+    A = sigmoid(Z)                                    # compute activation
+    L = Y @ np.log(A).T + (1 - Y) @ np.log(1 - A).T
+    cost = -( 1 / m ) * np.sum(L)                                  # compute cost
     ### END CODE HERE ###
     
     # BACKWARD PROPAGATION (TO FIND GRAD)
     ### START CODE HERE ### (≈ 2 lines of code)
-    dw = None
-    db = None
+    dZ = A - Y
+    dw = ( 1 / m ) * X @ dZ.T
+    db = ( 1 / m ) * np.sum(dZ)
     ### END CODE HERE ###
 
     assert(dw.shape == w.shape)
@@ -382,7 +385,7 @@ def propagate(w, b, X, Y):
     return grads, cost
 
 
-# In[ ]:
+# In[12]:
 
 w, b, X, Y = np.array([[1.],[2.]]), 2., np.array([[1.,2.,-1.],[3.,4.,-3.2]]), np.array([[1,0,1]])
 grads, cost = propagate(w, b, X, Y)
@@ -417,7 +420,7 @@ print ("cost = " + str(cost))
 # 
 # **Exercise:** Write down the optimization function. The goal is to learn $w$ and $b$ by minimizing the cost function $J$. For a parameter $\theta$, the update rule is $ \theta = \theta - \alpha \text{ } d\theta$, where $\alpha$ is the learning rate.
 
-# In[ ]:
+# In[13]:
 
 # GRADED FUNCTION: optimize
 
@@ -452,7 +455,7 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost = False):
         
         # Cost and gradient calculation (≈ 1-4 lines of code)
         ### START CODE HERE ### 
-        grads, cost = None
+        grads, cost = propagate(w, b, X, Y)
         ### END CODE HERE ###
         
         # Retrieve derivatives from grads
@@ -461,8 +464,8 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost = False):
         
         # update rule (≈ 2 lines of code)
         ### START CODE HERE ###
-        w = None
-        b = None
+        w = w - learning_rate * dw
+        b = b - learning_rate * db
         ### END CODE HERE ###
         
         # Record the costs
@@ -482,7 +485,7 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost = False):
     return params, grads, costs
 
 
-# In[ ]:
+# In[14]:
 
 params, grads, costs = optimize(w, b, X, Y, num_iterations= 100, learning_rate = 0.009, print_cost = False)
 
@@ -523,7 +526,7 @@ print ("db = " + str(grads["db"]))
 # 
 # 2. Convert the entries of a into 0 (if activation <= 0.5) or 1 (if activation > 0.5), stores the predictions in a vector `Y_prediction`. If you wish, you can use an `if`/`else` statement in a `for` loop (though there is also a way to vectorize this). 
 
-# In[ ]:
+# In[15]:
 
 # GRADED FUNCTION: predict
 
@@ -546,7 +549,7 @@ def predict(w, b, X):
     
     # Compute vector "A" predicting the probabilities of a cat being present in the picture
     ### START CODE HERE ### (≈ 1 line of code)
-    A = None
+    A = sigmoid( w.T @ X + b)
     ### END CODE HERE ###
     
     for i in range(A.shape[1]):
@@ -556,12 +559,14 @@ def predict(w, b, X):
         pass
         ### END CODE HERE ###
     
+    threshold = 0.5
+    Y_prediction = ( A > threshold  ) * 1
     assert(Y_prediction.shape == (1, m))
     
     return Y_prediction
 
 
-# In[ ]:
+# In[16]:
 
 w = np.array([[0.1124579],[0.23106775]])
 b = -0.3

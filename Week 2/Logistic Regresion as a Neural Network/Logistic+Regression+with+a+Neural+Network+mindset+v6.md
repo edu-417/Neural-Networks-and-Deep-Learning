@@ -262,7 +262,7 @@ def sigmoid(z):
     """
 
     ### START CODE HERE ### (≈ 1 line of code)
-    s = None
+    s = 1 / ( 1 + np.exp(-z) )
     ### END CODE HERE ###
     
     return s
@@ -272,6 +272,9 @@ def sigmoid(z):
 ```python
 print ("sigmoid([0, 2]) = " + str(sigmoid(np.array([0,2]))))
 ```
+
+    sigmoid([0, 2]) = [ 0.5         0.88079708]
+
 
 **Expected Output**: 
 
@@ -303,8 +306,8 @@ def initialize_with_zeros(dim):
     """
     
     ### START CODE HERE ### (≈ 1 line of code)
-    w = None
-    b = None
+    w = np.zeros((dim, 1))
+    b = 0
     ### END CODE HERE ###
 
     assert(w.shape == (dim, 1))
@@ -320,6 +323,11 @@ w, b = initialize_with_zeros(dim)
 print ("w = " + str(w))
 print ("b = " + str(b))
 ```
+
+    w = [[ 0.]
+     [ 0.]]
+    b = 0
+
 
 **Expected Output**: 
 
@@ -383,14 +391,17 @@ def propagate(w, b, X, Y):
     
     # FORWARD PROPAGATION (FROM X TO COST)
     ### START CODE HERE ### (≈ 2 lines of code)
-    A = None                                    # compute activation
-    cost = None                                 # compute cost
+    Z = w.T @ X + b
+    A = sigmoid(Z)                                    # compute activation
+    L = Y @ np.log(A).T + (1 - Y) @ np.log(1 - A).T
+    cost = -( 1 / m ) * np.sum(L)                                  # compute cost
     ### END CODE HERE ###
     
     # BACKWARD PROPAGATION (TO FIND GRAD)
     ### START CODE HERE ### (≈ 2 lines of code)
-    dw = None
-    db = None
+    dZ = A - Y
+    dw = ( 1 / m ) * X @ dZ.T
+    db = ( 1 / m ) * np.sum(dZ)
     ### END CODE HERE ###
 
     assert(dw.shape == w.shape)
@@ -412,6 +423,12 @@ print ("dw = " + str(grads["dw"]))
 print ("db = " + str(grads["db"]))
 print ("cost = " + str(cost))
 ```
+
+    dw = [[ 0.99845601]
+     [ 2.39507239]]
+    db = 0.00145557813678
+    cost = 5.80154531939
+
 
 **Expected Output**:
 
@@ -474,7 +491,7 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost = False):
         
         # Cost and gradient calculation (≈ 1-4 lines of code)
         ### START CODE HERE ### 
-        grads, cost = None
+        grads, cost = propagate(w, b, X, Y)
         ### END CODE HERE ###
         
         # Retrieve derivatives from grads
@@ -483,8 +500,8 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost = False):
         
         # update rule (≈ 2 lines of code)
         ### START CODE HERE ###
-        w = None
-        b = None
+        w = w - learning_rate * dw
+        b = b - learning_rate * db
         ### END CODE HERE ###
         
         # Record the costs
@@ -513,6 +530,14 @@ print ("b = " + str(params["b"]))
 print ("dw = " + str(grads["dw"]))
 print ("db = " + str(grads["db"]))
 ```
+
+    w = [[ 0.19033591]
+     [ 0.12259159]]
+    b = 1.92535983008
+    dw = [[ 0.67752042]
+     [ 1.41625495]]
+    db = 0.219194504541
+
 
 **Expected Output**: 
 
@@ -568,7 +593,7 @@ def predict(w, b, X):
     
     # Compute vector "A" predicting the probabilities of a cat being present in the picture
     ### START CODE HERE ### (≈ 1 line of code)
-    A = None
+    A = sigmoid( w.T @ X + b)
     ### END CODE HERE ###
     
     for i in range(A.shape[1]):
@@ -578,6 +603,8 @@ def predict(w, b, X):
         pass
         ### END CODE HERE ###
     
+    threshold = 0.5
+    Y_prediction = ( A > threshold  ) * 1
     assert(Y_prediction.shape == (1, m))
     
     return Y_prediction
@@ -590,6 +617,9 @@ b = -0.3
 X = np.array([[1.,-1.1,-3.2],[1.2,2.,0.1]])
 print ("predictions = " + str(predict(w, b, X)))
 ```
+
+    predictions = [[1 1 0]]
+
 
 **Expected Output**: 
 
