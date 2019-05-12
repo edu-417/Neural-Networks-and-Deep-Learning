@@ -734,7 +734,7 @@ plt.show()
 # 
 # Let's compare the learning curve of our model with several choices of learning rates. Run the cell below. This should take about 1 minute. Feel free also to try different values than the three we have initialized the `learning_rates` variable to contain, and see what happens. 
 
-# In[ ]:
+# In[21]:
 
 learning_rates = [0.01, 0.001, 0.0001]
 models = {}

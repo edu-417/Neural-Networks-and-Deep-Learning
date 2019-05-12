@@ -837,6 +837,30 @@ frame.set_facecolor('0.90')
 plt.show()
 ```
 
+    learning rate is: 0.01
+    train accuracy: 99.52153110047847 %
+    test accuracy: 68.0 %
+    
+    -------------------------------------------------------
+    
+    learning rate is: 0.001
+    train accuracy: 88.99521531100478 %
+    test accuracy: 64.0 %
+    
+    -------------------------------------------------------
+    
+    learning rate is: 0.0001
+    train accuracy: 68.42105263157895 %
+    test accuracy: 36.0 %
+    
+    -------------------------------------------------------
+    
+
+
+
+![png](output_50_1.png)
+
+
 **Interpretation**: 
 - Different learning rates give different costs and thus different predictions results.
 - If the learning rate is too large (0.01), the cost may oscillate up and down. It may even diverge (though in this example, using 0.01 still eventually ends up at a good value for the cost). 
